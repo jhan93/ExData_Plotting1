@@ -1,0 +1,56 @@
+setwd('/Users/jhan/Desktop/Coursera')
+
+## Read the data in
+consum <- read.delim2('household_power_consumption.txt', sep = ';', header = TRUE, stringsAsFactors = FALSE)
+## Convert the Date column to be of the date format
+consum$Time2 <- paste(consum$Date, consum$Time)
+
+consum$Time2 <- (strptime(consum$Time2, "%d/%m/%Y %H:%M:%S"))
+consum$Date <- as.Date(consum$Date, tryFormats  = '%d/%m/%Y')
+
+
+## Subsetting to look into just Feb 1 and 2 2007
+sub_consum <- consum[consum$Date == '2007-02-01' | consum$Date == '2007-02-02',]
+
+png(file = 'plot4.png')
+par(mfcol= c(2,2))
+
+## Top left
+plot(x = sub_consum$Time2, y = sub_consum$Global_active_power, ylab = 'Global Active Power (kilowatts)', xlab = '' ,type = 'l')
+
+
+## Bottom left
+plot(sub_consum$Time2, sub_consum$Sub_metering_1, type = 'l', xlab = '', ylab = 'Energy sub metering')
+lines(sub_consum$Time2, sub_consum$Sub_metering_2, type = 'l', col = 'red')
+lines(sub_consum$Time2, sub_consum$Sub_metering_3, type = 'l', col = 'blue')
+legend('topright', legend= c('Sub_metering_1', 'Sub_metering_2', 'Sub_metering_3'), col = c('black', 'red', 'blue'), 
+       ncol = 1, lty = c(1,1,1), bty = 'n')
+
+
+## Top right
+plot(sub_consum$Time2, sub_consum$Voltage, type = 'l', xlab = 'datetime', ylab = 'Voltage')
+
+## Bottom right
+plot(sub_consum$Time2, sub_consum$Global_reactive_power, type = 'l', xlab = 'datetime', ylab = 'Global_reactive_power')
+dev.off()
+
+
+par(mfcol= c(2,2))
+
+## Top left
+plot(x = sub_consum$Time2, y = sub_consum$Global_active_power, ylab = 'Global Active Power (kilowatts)', xlab = '' ,type = 'l')
+
+
+## Bottom left
+plot(sub_consum$Time2, sub_consum$Sub_metering_1, type = 'l', xlab = '', ylab = 'Energy sub metering')
+lines(sub_consum$Time2, sub_consum$Sub_metering_2, type = 'l', col = 'red')
+lines(sub_consum$Time2, sub_consum$Sub_metering_3, type = 'l', col = 'blue')
+legend('topright', legend= c('Sub_metering_1', 'Sub_metering_2', 'Sub_metering_3'), col = c('black', 'red', 'blue'), 
+       ncol = 1, lty = c(1,1,1), bty = 'n')
+
+
+## Top right
+plot(sub_consum$Time2, sub_consum$Voltage, type = 'l', xlab = 'datetime', ylab = 'Voltage')
+
+## Bottom right
+plot(sub_consum$Time2, sub_consum$Global_reactive_power, type = 'l', xlab = 'datetime', ylab = 'Global_reactive_power')
